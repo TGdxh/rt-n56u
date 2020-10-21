@@ -25,7 +25,7 @@ set_iptable()
 	for IP in $IPS
 	do
 		iptables -t nat -A PREROUTING -p tcp -d $IP --dport 53 -j REDIRECT --to-ports 5335 >/dev/null 2>&1
-		iptables -t nat -A PREROUTING -p udp -d $IP --dport 53 -j REDIRECT --to-ports 5335>/dev/null 2>&1
+		iptables -t nat -A PREROUTING -p udp -d $IP --dport 53 -j REDIRECT --to-ports 5335 >/dev/null 2>&1
 	done
 
 	IPS="`ifconfig | grep "inet6 addr" | grep -v " fe80::" | grep -v " ::1" | grep "Global" | awk '{print $3}'`"
@@ -62,7 +62,7 @@ adg_file="/etc/storage/adg.sh"
 if [ ! -f "$adg_file" ] || [ ! -s "$adg_file" ] ; then
 	cat > "$adg_file" <<-\EEE
 bind_host: 0.0.0.0
-bind_port: 3030
+bind_port: 3000
 auth_name: admin
 auth_pass: admin
 language: zh-cn
@@ -73,13 +73,13 @@ dns:
   protection_enabled: true
   filtering_enabled: true
   blocking_mode: nxdomain
-  blocked_response_ttl: 10
+  blocked_response_ttl: 60
   querylog_enabled: true
-  ratelimit: 20
+  ratelimit: 0
   ratelimit_whitelist: []
   refuse_any: true
   bootstrap_dns:
-  - 1.1.1.1
+  - 114.114.114.114
   all_servers: true
   allowed_clients: []
   disallowed_clients: []
